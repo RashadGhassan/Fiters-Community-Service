@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "341304961285",
+    "firebase_url": "https://community-service-b06ac-default-rtdb.firebaseio.com",
+    "project_id": "community-service-b06ac",
+    "storage_bucket": "community-service-b06ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341304961285:android:6b2484c7be7afbbab0af6c",
+        "android_client_info": {
+          "package_name": "com.example.community_service"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfNlbvEjUpxlQ7c6adjc-TYpjLjdwKGVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
