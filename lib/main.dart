@@ -14,7 +14,6 @@ import 'package:community_service/screens/settingsScreen.dart';
 import 'package:community_service/screens/eventDescriptionScreen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-//hello
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
