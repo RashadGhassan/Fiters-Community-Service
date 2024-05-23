@@ -9,6 +9,7 @@ class FirebaseService {
       DatabaseEvent event = await refh.child(useruid).once();
       if (event.snapshot.value != null) {
         Map<dynamic, dynamic> snapdata = event.snapshot.value as dynamic;
+        print(snapdata);
         return UserDetails.fromMap(snapdata);
       } else {
         return null;

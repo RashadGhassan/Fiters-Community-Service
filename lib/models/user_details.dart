@@ -1,6 +1,5 @@
 // ignore_for_file: constant_identifier_names
 
-
 class UserDetails {
   String fName;
   String lName;
@@ -9,6 +8,8 @@ class UserDetails {
   String phoneNum;
   String studentId;
   String major;
+  List<String> eventlist;
+  int points;
 
   UserDetails({
     required this.fName,
@@ -18,6 +19,8 @@ class UserDetails {
     required this.phoneNum,
     required this.studentId,
     required this.major,
+    required this.eventlist,
+    required this.points,
   });
 
   Map<dynamic, dynamic> toMap() {
@@ -29,6 +32,8 @@ class UserDetails {
       "phoneNum": phoneNum,
       "studentId": studentId,
       "major": major,
+      "eventlist": eventlist,
+      "points": points,
     };
   }
 
@@ -41,6 +46,8 @@ class UserDetails {
       phoneNum: map["phoneNum"],
       studentId: map["studentId"],
       major: map["major"],
+      eventlist: map["eventlist"],
+      points: map["points"],
     );
   }
 }

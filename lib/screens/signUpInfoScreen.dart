@@ -456,6 +456,8 @@ class _SignUpInfoState extends State<SignUpInfo> {
           "phoneNum": phoneNumController.text.toString(),
           "studentId": studentNumController.text.toString(),
           "major": selectedItemMajor.toString(),
+          "eventlist": [""],
+          "points": 0,
         };
         var userID = Auth().auth.currentUser!.uid;
 
