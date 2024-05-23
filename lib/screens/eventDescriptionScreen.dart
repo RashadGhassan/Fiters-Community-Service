@@ -1,5 +1,5 @@
-import 'package:community_service/models/event_details.dart';
-import 'package:community_service/models/firebase_service.dart';
+// import 'package:community_service/models/event_details.dart';
+// import 'package:community_service/models/firebase_service.dart';
 import 'package:flutter/material.dart';
 
 class EventDescription extends StatelessWidget {

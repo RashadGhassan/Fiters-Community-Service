@@ -1,4 +1,4 @@
-import 'package:community_service/main.dart';
+// import 'package:community_service/main.dart';
 import 'package:community_service/models/event_details.dart';
 import 'package:flutter/material.dart';
 

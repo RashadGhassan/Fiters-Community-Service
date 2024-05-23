@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:community_service/models/user_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:community_service/models/user_details.dart';
-import 'package:community_service/widgets/drawer.dart';
+// import 'package:community_service/widgets/drawer.dart';
 import 'package:community_service/models/firebase_service.dart';
 
 class ProfileScreen extends StatelessWidget {
