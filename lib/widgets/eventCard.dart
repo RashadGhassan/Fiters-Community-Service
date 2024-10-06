@@ -1,6 +1,7 @@
 // import 'package:community_service/main.dart';
 import 'package:community_service/models/event_details.dart';
 import 'package:flutter/material.dart';
+import 'package:community_service/screens/eventDescriptionScreen.dart';
 
 class EventCard extends StatelessWidget {
   final EventDetails eventDetails;
@@ -10,7 +11,15 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, "/eventDescriptionScreen");
+        // Navigator.pushNamed(context, "/eventDescriptionScreen");
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EventDescription(
+              eventDetails: eventDetails,
+            ),
+          ),
+        );
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),

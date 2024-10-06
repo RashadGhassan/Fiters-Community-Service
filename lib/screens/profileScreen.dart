@@ -91,7 +91,6 @@ class _UserProfileState extends State<UserProfile> {
     } else {
       return Container(
         padding: EdgeInsets.only(bottom: 32),
-        width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,

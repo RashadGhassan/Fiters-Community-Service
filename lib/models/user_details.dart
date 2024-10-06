@@ -8,7 +8,6 @@ class UserDetails {
   String phoneNum;
   String studentId;
   String major;
-  List<String> eventlist;
   int points;
 
   UserDetails({
@@ -19,7 +18,6 @@ class UserDetails {
     required this.phoneNum,
     required this.studentId,
     required this.major,
-    required this.eventlist,
     required this.points,
   });
 
@@ -32,7 +30,6 @@ class UserDetails {
       "phoneNum": phoneNum,
       "studentId": studentId,
       "major": major,
-      "eventlist": eventlist,
       "points": points,
     };
   }
@@ -46,7 +43,6 @@ class UserDetails {
       phoneNum: map["phoneNum"],
       studentId: map["studentId"],
       major: map["major"],
-      eventlist: map["eventlist"],
       points: map["points"],
     );
   }

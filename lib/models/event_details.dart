@@ -1,6 +1,7 @@
 // import 'package:firebase_database/firebase_database.dart';
 
 class EventDetails {
+  String eventID;
   String evenImageUrl;
   String eventName;
   String eventLocation;
@@ -14,6 +15,7 @@ class EventDetails {
   String organizerPic;
 
   EventDetails({
+    required this.eventID,
     required this.evenImageUrl,
     required this.eventName,
     required this.eventLocation,
@@ -30,6 +32,7 @@ class EventDetails {
   // Method to convert EventDetails object to Map
   Map<String, dynamic> toMap() {
     return {
+      'eventID': eventID,
       'evenImageUrl': evenImageUrl,
       'eventName': eventName,
       'eventLocation': eventLocation,
@@ -47,6 +50,7 @@ class EventDetails {
   // Static method to create EventDetails object from Map
   static EventDetails fromMap(Map<dynamic, dynamic> map) {
     return EventDetails(
+        eventID: map['eventID'],
         evenImageUrl: map['evenImageUrl'],
         eventName: map['eventName'],
         eventLocation: map['eventLocation'],

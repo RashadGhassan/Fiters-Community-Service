@@ -1,6 +1,9 @@
 import 'package:community_service/models/event_details.dart';
+import 'package:community_service/models/user_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:community_service/models/user_details.dart';
+
+import 'user_event_details.dart';
 
 class FirebaseService {
   Future<UserDetails?> getUserDetails(String useruid) async {
@@ -29,17 +32,43 @@ class FirebaseService {
       DatabaseEvent event = await productsRef.once();
 
       if (event.snapshot.value != null) {
-        print(event.snapshot.value.toString());
-
         List<EventDetails> productList = [];
         Map<dynamic, dynamic> snapshotData = event.snapshot.value as dynamic;
-
         snapshotData.forEach((key, value) {
           productList.add(EventDetails.fromMap(value as Map<dynamic, dynamic>));
         });
-
-        print("Product List: $productList");
         return productList;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print('Error getting product details: $e');
+      return [];
+    }
+  }
+
+  Future<List<UserEventDetails>> getUserEventDetails() async {
+    try {
+      DatabaseReference joinedEventsRef =
+          FirebaseDatabase.instance.ref().child("userEvents");
+      DatabaseEvent event = await joinedEventsRef.once();
+
+      DatabaseReference refh = FirebaseDatabase.instance.ref().child("users");
+      DatabaseEvent user =
+          await refh.child(Auth().auth.currentUser!.uid).once();
+
+      if (event.snapshot.value != null) {
+        List<UserEventDetails> userEventList = [];
+        Map<dynamic, dynamic> snapshotDataEvent =
+            event.snapshot.value as dynamic;
+        Map<dynamic, dynamic> snapshotDataUser = user.snapshot.value as dynamic;
+        snapshotDataEvent.forEach((key, value) {
+          if (snapshotDataUser["studentId"] == value["stID"]) {
+            userEventList
+                .add(UserEventDetails.fromMap(value as Map<dynamic, dynamic>));
+          }
+        });
+        return userEventList;
       } else {
         return [];
       }

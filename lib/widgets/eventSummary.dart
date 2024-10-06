@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../models/event_details.dart';
+import '../models/firebase_service.dart';
+import '../models/user_event_details.dart';
+
 class EventSummaryWidget extends StatefulWidget {
-  const EventSummaryWidget({super.key});
+  final UserEventDetails userEventDetails;
+  const EventSummaryWidget({super.key, required this.userEventDetails});
 
   @override
   State<EventSummaryWidget> createState() => _EventSummaryWidgetState();
 }
 
 class _EventSummaryWidgetState extends State<EventSummaryWidget> {
+  Future<List<EventDetails>>? eventsData =
+      FirebaseService().getProductDetails();
+
   @override
   Widget build(BuildContext context) {
     return Container(

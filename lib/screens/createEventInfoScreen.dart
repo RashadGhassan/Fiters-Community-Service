@@ -32,6 +32,7 @@ class _CompleteInfoState extends State<CompleteInfo> {
   String fromTime = "From*";
   String toTime = "To*";
   String selectedDates = "Date*";
+  final now = DateTime.now().millisecond;
 
   List<TextEditingController> listController = [];
 
@@ -939,6 +940,7 @@ class _CompleteInfoState extends State<CompleteInfo> {
       if (snapshot2.state == TaskState.success) {
         String downloadUrlOrg = await storageReferenceOrg.getDownloadURL();
         var eventObj = EventDetails(
+            eventID: '${now}',
             evenImageUrl: '$downloadUrl',
             organizerPic: '$downloadUrlOrg',
             organizerName: '${organizerNameController.text}',

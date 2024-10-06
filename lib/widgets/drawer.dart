@@ -24,7 +24,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   print("===================================");
-                  print(Auth().auth.currentUser!.uid);
+                  print(FirebaseService()
+                      .getUserDetails(Auth().auth.currentUser!.uid));
                   print(snapshot.data);
                   print("===================================");
                   UserDetails user = snapshot.data!;

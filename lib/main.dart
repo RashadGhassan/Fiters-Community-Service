@@ -1,4 +1,5 @@
 import 'package:community_service/firebase_options.dart';
+import 'package:community_service/models/event_details.dart';
 import 'package:flutter/material.dart';
 
 import 'package:community_service/screens/splashScreen.dart';
@@ -14,6 +15,7 @@ import 'package:community_service/screens/settingsScreen.dart';
 import 'package:community_service/screens/eventDescriptionScreen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -49,7 +51,6 @@ class MyApp extends StatelessWidget {
         "/profileScreen": (context) => const ProfileScreen(),
         "/settingsScreen": (context) => const Settings(),
         "/editProfileScreen": (context) => const EditProfileScreen(),
-        "/eventDescriptionScreen": (context) => const EventDescription(),
       },
     );
   }

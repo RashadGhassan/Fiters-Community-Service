@@ -1,12 +1,23 @@
-// import 'package:community_service/models/event_details.dart';
-// import 'package:community_service/models/firebase_service.dart';
+import 'package:community_service/models/event_details.dart';
+import 'package:community_service/models/firebase_service.dart';
+import 'package:community_service/models/user_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class EventDescription extends StatelessWidget {
-  // final EventDetails eventDetails;
-  // const EventDescription({super.key, required this.eventDetails});
-  const EventDescription({super.key});
+import '../models/user_details.dart';
+import '../models/user_event_details.dart';
 
+class EventDescription extends StatefulWidget {
+  final EventDetails eventDetails;
+  const EventDescription({super.key, required this.eventDetails});
+
+  @override
+  State<EventDescription> createState() => _EventDescriptionState();
+}
+
+class _EventDescriptionState extends State<EventDescription> {
+  // const EventDescription({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +43,10 @@ class EventDescription extends StatelessWidget {
                   ],
                   borderRadius: BorderRadius.circular(15),
                 ),
+                child: Image.network(
+                  widget.eventDetails.evenImageUrl,
+                  fit: BoxFit.fill,
+                ),
               ),
               Container(
                 child: Column(
@@ -41,8 +56,8 @@ class EventDescription extends StatelessWidget {
                       height: 8,
                     ),
                     Text(
-                      // "${eventDetails.eventName}",
-                      "Linkedin Workshop",
+                      "${widget.eventDetails.eventName}",
+                      // "Linkedin Workshop",
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -63,8 +78,8 @@ class EventDescription extends StatelessWidget {
                           width: 4,
                         ),
                         Text(
-                          // "${eventDetails.eventLocation}",
-                          "FINC",
+                          "${widget.eventDetails.eventLocation}",
+                          // "FINC",
                           style: TextStyle(
                             fontSize: 16,
                           ),
@@ -84,8 +99,8 @@ class EventDescription extends StatelessWidget {
                           width: 4,
                         ),
                         Text(
-                          // "${eventDetails.eventDate}",
-                          "07/06/2024",
+                          "${widget.eventDetails.eventDate}",
+                          // "07/06/2024",
                           style: TextStyle(
                             fontSize: 16,
                           ),
@@ -105,8 +120,8 @@ class EventDescription extends StatelessWidget {
                           width: 4,
                         ),
                         Text(
-                          // "${eventDetails.eventTiming}",
-                          "11:00 am - 12:00 pm",
+                          "${widget.eventDetails.eventTiming}",
+                          // "11:00 am - 12:00 pm",
                           style: TextStyle(
                             fontSize: 16,
                           ),
@@ -126,8 +141,8 @@ class EventDescription extends StatelessWidget {
                           width: 4,
                         ),
                         Text(
-                          // "${eventDetails.eventTiming}",
-                          "25 people",
+                          "${widget.eventDetails.numOfParticipants}",
+                          // "25 people",
                           style: TextStyle(
                             fontSize: 16,
                           ),
@@ -138,7 +153,8 @@ class EventDescription extends StatelessWidget {
                       height: 16,
                     ),
                     Text(
-                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                      "${widget.eventDetails.eventDesc}",
+                      // "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
                       textAlign: TextAlign.justify,
                     ),
                     SizedBox(
@@ -157,7 +173,8 @@ class EventDescription extends StatelessWidget {
                     Row(
                       children: [
                         CircleAvatar(
-                          backgroundColor: Colors.red,
+                          backgroundImage:
+                              NetworkImage(widget.eventDetails.organizerPic),
                           maxRadius: 50,
                         ),
                         SizedBox(
@@ -165,7 +182,8 @@ class EventDescription extends StatelessWidget {
                         ),
                         Text(
                           overflow: TextOverflow.ellipsis,
-                          "Software Engineering Club",
+                          "${widget.eventDetails.organizerName}",
+                          // "Software Engineering Club",
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -192,19 +210,7 @@ class EventDescription extends StatelessWidget {
                         SizedBox(
                           width: 8,
                         ),
-                        Text("Rashad Ghassan"),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.circle,
-                          size: 10,
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text("Maamoun Hajtaher"),
+                        Text("${widget.eventDetails.presenterName}"),
                       ],
                     ),
                   ],
@@ -219,9 +225,11 @@ class EventDescription extends StatelessWidget {
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 24),
-        color: Colors.transparent,
+        color: Color(0x00000000),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            handleJoin(context);
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF144E73),
             shape: const RoundedRectangleBorder(
@@ -244,5 +252,55 @@ class EventDescription extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void handleJoin(BuildContext c) {
+    var alert = AlertDialog(
+      title: Text("Join ${widget.eventDetails.eventName}"),
+      content: Text("Are you sure you want to joi this event?!"),
+      actions: [
+        TextButton(
+          onPressed: () {
+            _joinUserEvent();
+            Navigator.pushNamed(c, "/homeScreen");
+          },
+          child: Text("OK"),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(c);
+          },
+          child: Text("Cancel"),
+        ),
+      ],
+    );
+    showDialog(
+        context: c,
+        builder: (context) {
+          return alert;
+        });
+  }
+
+  final User? usr = Auth().auth.currentUser;
+  String dateJoined = DateTime.now().toString();
+
+  Future<void> _joinUserEvent() async {
+    final DatabaseReference userEventsRef =
+        FirebaseDatabase.instance.ref().child('userEvents');
+    UserDetails? userData = await FirebaseService().getUserDetails(usr!.uid);
+    var eventObj = UserEventDetails(
+      eID: '${widget.eventDetails.eventID}',
+      stID: '${userData!.studentId}',
+      dateJoined: '$dateJoined',
+    );
+
+    userEventsRef.push().set(eventObj.toMap()).then((_) {
+      print('****************************************');
+      print('Joined event successfully!');
+      print('****************************************');
+      Navigator.pushNamed(context, '/homeScreen');
+    }).catchError((error) {
+      print('Failed to add event: $error');
+    });
   }
 }
