@@ -1,7 +1,5 @@
 import 'package:community_service/firebase_options.dart';
-import 'package:community_service/models/event_details.dart';
 import 'package:flutter/material.dart';
-
 import 'package:community_service/screens/splashScreen.dart';
 import 'package:community_service/screens/signInScreen.dart';
 import 'package:community_service/screens/signUpScreen.dart';
@@ -12,8 +10,6 @@ import 'package:community_service/screens/homeScreen.dart';
 import 'package:community_service/screens/dashScreen.dart';
 import 'package:community_service/screens/createEventInfoScreen.dart';
 import 'package:community_service/screens/settingsScreen.dart';
-import 'package:community_service/screens/eventDescriptionScreen.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {

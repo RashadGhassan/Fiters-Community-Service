@@ -1,5 +1,6 @@
+import 'dart:async';
+import 'package:community_service/screens/eventAttendanceDescriptionScreen.dart';
 import 'package:flutter/material.dart';
-
 import '../models/event_details.dart';
 import '../models/firebase_service.dart';
 import '../models/user_event_details.dart';
@@ -13,11 +14,41 @@ class EventSummaryWidget extends StatefulWidget {
 }
 
 class _EventSummaryWidgetState extends State<EventSummaryWidget> {
-  Future<List<EventDetails>>? eventsData =
-      FirebaseService().getProductDetails();
+  EventDetails? eventDetails;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getData(); // Fetch the data when the widget is created
+  }
+
+  Future<void> getData() async {
+    try {
+      eventDetails = await FirebaseService()
+          .getProductDetailsByEventId(widget.userEventDetails.eID);
+      ; // Fetch and store data
+    } catch (error) {
+      print('Error: $error');
+    } finally {
+      setState(() {
+        isLoading = false; // Update the loading state
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    print("=============================");
+    if (isLoading) {
+      return CircularProgressIndicator();
+    } else if (eventDetails == null) {
+      return Text('Error or no data available');
+    } else {
+      print("=============================");
+      print(eventDetails!.eventID);
+      print(eventDetails!.eventName);
+    }
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
       decoration: BoxDecoration(
@@ -42,7 +73,7 @@ class _EventSummaryWidgetState extends State<EventSummaryWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "LinkedIn Workshop",
+                      "${eventDetails!.eventName}",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -61,7 +92,7 @@ class _EventSummaryWidgetState extends State<EventSummaryWidget> {
                           width: 4,
                         ),
                         Text(
-                          "1G04",
+                          "${eventDetails!.eventLocation}",
                           style: TextStyle(
                             fontSize: 12,
                             color: Color(0xff8A8B8B),
@@ -83,7 +114,7 @@ class _EventSummaryWidgetState extends State<EventSummaryWidget> {
                           width: 4,
                         ),
                         Text(
-                          "02/05/2024",
+                          "${eventDetails!.eventDate}",
                           style: TextStyle(
                             fontSize: 12,
                             color: Color(0xff8A8B8B),
@@ -105,7 +136,7 @@ class _EventSummaryWidgetState extends State<EventSummaryWidget> {
                           width: 4,
                         ),
                         Text(
-                          "11:00 am - 12:00 pm",
+                          "${eventDetails!.eventTiming}",
                           style: TextStyle(
                             fontSize: 12,
                             color: Color(0xff8A8B8B),
@@ -120,7 +151,16 @@ class _EventSummaryWidgetState extends State<EventSummaryWidget> {
                     Icons.arrow_forward_ios_outlined,
                     color: Color(0xff8A8B8B),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EventAttendance(
+                          eventDetails: eventDetails!,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

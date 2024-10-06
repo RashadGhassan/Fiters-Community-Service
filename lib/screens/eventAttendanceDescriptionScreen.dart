@@ -8,15 +8,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user_details.dart';
 import '../models/user_event_details.dart';
 
-class EventDescription extends StatefulWidget {
+class EventAttendance extends StatefulWidget {
   final EventDetails eventDetails;
-  const EventDescription({super.key, required this.eventDetails});
+  const EventAttendance({super.key, required this.eventDetails});
 
   @override
-  State<EventDescription> createState() => _EventDescriptionState();
+  State<EventAttendance> createState() => _EventAttendanceState();
 }
 
-class _EventDescriptionState extends State<EventDescription> {
+class _EventAttendanceState extends State<EventAttendance> {
   // const EventDescription({super.key});
   @override
   Widget build(BuildContext context) {
@@ -228,7 +228,7 @@ class _EventDescriptionState extends State<EventDescription> {
         color: Color(0x00000000),
         child: ElevatedButton(
           onPressed: () {
-            handleJoin(context);
+            // Take Attendance Action
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF144E73),
@@ -241,7 +241,7 @@ class _EventDescriptionState extends State<EventDescription> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Text(
-              "Join Event",
+              "Take Attendance",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -252,55 +252,5 @@ class _EventDescriptionState extends State<EventDescription> {
         ),
       ),
     );
-  }
-
-  void handleJoin(BuildContext c) {
-    var alert = AlertDialog(
-      title: Text("Join ${widget.eventDetails.eventName}"),
-      content: Text("Are you sure you want to join this event?!"),
-      actions: [
-        TextButton(
-          onPressed: () {
-            _joinUserEvent();
-            Navigator.pushNamed(c, "/homeScreen");
-          },
-          child: Text("OK"),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.pop(c);
-          },
-          child: Text("Cancel"),
-        ),
-      ],
-    );
-    showDialog(
-        context: c,
-        builder: (context) {
-          return alert;
-        });
-  }
-
-  final User? usr = Auth().auth.currentUser;
-  String dateJoined = DateTime.now().toString();
-
-  Future<void> _joinUserEvent() async {
-    final DatabaseReference userEventsRef =
-        FirebaseDatabase.instance.ref().child('userEvents');
-    UserDetails? userData = await FirebaseService().getUserDetails(usr!.uid);
-    var eventObj = UserEventDetails(
-      eID: '${widget.eventDetails.eventID}',
-      stID: '${userData!.studentId}',
-      dateJoined: '$dateJoined',
-    );
-
-    userEventsRef.push().set(eventObj.toMap()).then((_) {
-      print('****************************************');
-      print('Joined event successfully!');
-      print('****************************************');
-      Navigator.pushNamed(context, '/homeScreen');
-    }).catchError((error) {
-      print('Failed to add event: $error');
-    });
   }
 }

@@ -36,6 +36,7 @@ class FirebaseService {
         Map<dynamic, dynamic> snapshotData = event.snapshot.value as dynamic;
         snapshotData.forEach((key, value) {
           productList.add(EventDetails.fromMap(value as Map<dynamic, dynamic>));
+          productList.last.eventID = key;
         });
         return productList;
       } else {
@@ -44,6 +45,32 @@ class FirebaseService {
     } catch (e) {
       print('Error getting product details: $e');
       return [];
+    }
+  }
+
+//testing
+  Future<EventDetails> getProductDetailsByEventId(String eid) async {
+    try {
+      DatabaseReference productsRef =
+          FirebaseDatabase.instance.ref().child("events");
+
+      DatabaseEvent event = await productsRef.once();
+
+      if (event.snapshot.value != null) {
+        var resultEvent;
+        Map<dynamic, dynamic> snapshotData = event.snapshot.value as dynamic;
+        snapshotData.forEach((key, value) {
+          if (key == eid) {
+            resultEvent = EventDetails.fromMap(value as Map<dynamic, dynamic>);
+          }
+        });
+        return resultEvent;
+      } else {
+        return null!;
+      }
+    } catch (e) {
+      print('Error getting product details: $e');
+      return null!;
     }
   }
 
